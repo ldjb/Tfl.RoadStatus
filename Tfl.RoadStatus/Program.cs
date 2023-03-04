@@ -5,8 +5,17 @@ using Tfl.RoadStatus.Models;
 
 namespace Tfl.RoadStatus
 {
+	/// <summary>
+	/// The entry point to the program.
+	/// </summary>
 	class Program
 	{
+		/// <summary>
+		/// This is the first method that is run.
+		/// Displays information about a road based on an ID provided as arguments.
+		/// </summary>
+		/// <param name="args">An array of words which, together, may form a road ID.</param>
+		/// <returns>A status code: 0 for success, or other values for errors.</returns>
 		static async Task<int> Main(string[] args)
 		{
 			var config = new ConfigurationBuilder()
@@ -18,8 +27,8 @@ namespace Tfl.RoadStatus
 
 			if (args.Length == 0)
 			{
-				Console.Error.WriteLine("Please provide the road ID as an argument.");
-				return 1;
+				Console.Error.WriteLine(Constants.ProvideRoadIdMessage);
+				return (int) Constants.StatusCode.NoArgumentsProvided;
 			}
 
 			// The road ID may be a single word ("a2"),
@@ -34,20 +43,19 @@ namespace Tfl.RoadStatus
 			}
 			catch (RoadNotFoundException)
 			{
-				Console.Error.WriteLine($"{roadId} is not a valid road");
-				return 1;
+				Console.Error.WriteLine(string.Format(
+					Constants.NotAValidRoadMessage,roadId));
+				return (int) Constants.StatusCode.RoadNotFound;
 			}
 			catch (UnifiedApiException)
 			{
-				Console.Error.WriteLine("There was a problem retrieving this information.");
-				Console.Error.WriteLine("Check that you've entered your Unified API key in appsettings.json.");
-				return 1;
+				Console.Error.WriteLine(Constants.UnifiedApiErrorMessage);
+				return (int) Constants.StatusCode.UnifiedApiError;
 			}
 
-			Console.WriteLine($"The status of the {road.DisplayName} is as follows");
-			Console.WriteLine($"    Road Status is {road.StatusSeverity}");
-			Console.WriteLine($"    Road Status Description is {road.StatusSeverityDescription}");
-			return 0;
+			Console.WriteLine(string.Format(Constants.RoadInfoMessage,
+				road.DisplayName, road.StatusSeverity, road.StatusSeverityDescription));
+			return (int) Constants.StatusCode.Success;
 		}
 	}
 }

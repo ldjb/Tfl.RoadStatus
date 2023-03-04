@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Tfl.RoadStatus.Exceptions
+﻿namespace Tfl.RoadStatus.Exceptions
 {
+	/// <summary>
+	/// Exception thrown when the Unified API returns an unsuccessful response.
+	/// For example, where an invalid app_key is provided.
+	/// </summary>
 	[Serializable]
 	public class UnifiedApiException : Exception
 	{

@@ -6,6 +6,9 @@ using Tfl.RoadStatus.Exceptions;
 
 namespace Tfl.RoadStatus.Test
 {
+	/// <summary>
+	/// Tests for <see cref="ApiClient"/>.
+	/// </summary>
 	[TestClass]
 	public class ApiClientTests
 	{
